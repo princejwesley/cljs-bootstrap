@@ -58,7 +58,7 @@
               (recur))))))))
 
 
-(defn transpile [s, cb]
+(defn transpile [s]
   (let [rdr (string-push-back-reader s)
         eof (js-obj)
         env (ana/empty-env)]
@@ -66,14 +66,14 @@
               *ns* (create-ns 'cljs.user)
               r/*data-readers* tags/*cljs-data-readers*]
       (with-compiler-env cenv
-        (if (fn? cb) (cb (loop [result ""]
+        (loop [result ""]
           (let [form (r/read {:eof eof} rdr)]
             (if-not (identical? eof form)
-              (recur (clojure.string/join result
+              (recur (str result
                 (with-out-str
                   (c/emit
                     (ana/analyze
                       (assoc env :ns (ana/get-namespace ana/*cljs-ns*))
-                      form))))) result)))) "")))))
+                      form))))) result)))))))
 
 (set! *main-cli-fn* (fn [] nil))
