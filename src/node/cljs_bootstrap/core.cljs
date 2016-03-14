@@ -76,9 +76,4 @@
                       (assoc env :ns (ana/get-namespace ana/*cljs-ns*))
                       form))))) result)))) "")))))
 
-
-
-(defn -main [& args]
-  (eval (first args)))
-
-(set! *main-cli-fn* -main)
+(set! *main-cli-fn* (fn [] nil))
